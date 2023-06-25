@@ -1,22 +1,39 @@
 import os
-
-APP_PATH = os.path.abspath(os.getcwd())import os
 import sqlite3
 
-APP_PATH = os.path.abspath(os.getcwd())
-def generate_db_file():
-    if not os.path.exists(DATABASE_DIRECTORY):
-        os.makedirs(DATABASE_DIRECTORY)
+USER_DIRECTORY = os.path.expanduser("~\AppData\Local")
+DATA_DIRECTORY = os.path.join(USER_DIRECTORY, "Password Manager")
 
-    database = os.path.join(DATABASE_DIRECTORY, "app.db")
 
-    return database
+def show_password(button, widget):
+    def inner():
+        if button["relief"] == "raised":
+            button.config(relief="sunken")
+            widget.config(show="")
+        else:
+            button.config(relief="raised")
+            widget.config(show="•")
+        return inner
+    button['command'] = inner
 
-def create_connection():
-    pass
+# DATABASE Handling
+class DatabaseHandler:
+    def __init__(self):
+        self._database_directory = os.path.join(DATA_DIRECTORY, "database")
+    
+    @property
+    def database_directory(self):
+        return self._database_directory
 
-def initialize_database():
-    pass
+    @database_directory.setter
+    def database_directory(self, path):
+        if not os.path.isdir(path):
+            raise ValueError("Directory Path is Invalid")
+        
+        self._database_directory = path    
 
-if __name__ == "__main__":
-    generate_db_file()
+    def create_connection(self):
+        pass
+
+    def initialize_database(self):
+        pass
